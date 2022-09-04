@@ -1,0 +1,675 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:svidget="http://www.svidget.org/svidget"
+		 width="400" height="400" viewBox="0 0 400 400" style="background:transparent" svidget:version="0.2.0">
+	<title>Pie Chart</title>
+	<desc>
+		A simple pie chart. 
+		This pie chart takes in an array of data elements and displays them as a pie chart.
+		This widget was developed by Joe Agster for svidget.com and is licensed under the Creative Commons Attribution 4.0 License.
+	</desc>
+
+	<svidget:params>
+		<!-- data params -->
+		<svidget:param name="data" shortname="d" type="array" coerce="true" description="An array of name, value arrays. Example: [['Steelers', 0.14], ['Broncos', 0.38], ['Colts', 0.21], ['Raiders', 0.06]]. Note that the values do not need to sum to 1 or 100. The widget will auto sum the values to construct percentages." onset="handleDataParamSet" />
+		<svidget:param name="maxSlices" shortname="max" type="number" subtype="integer" defvalue="0" coerce="true" description="The max number of slices to allow. If there are more data for slices, the lowest valued slices will be grouped together as one slice. Default is unlimited." onset="handleDataParamSet" />
+		<svidget:param name="startAngle" shortname="angle" type="number" coerce="true" defvalue="0" description="The angle where the first slice will be located." onset="handleDataParamSet" />
+		<svidget:param name="sort" shortname="sort" type="bool" coerce="true" defvalue="0" description="Whether to sort the data. When true sorted by greatet to least value." onset="handleDataParamSet" />
+		<!-- style params -->
+		<svidget:param name="colors" type="array" coerce="true" description="An array of colors that correspond to each pie slice. If there are more slices than colors then colors will be reused." onset="handleColorsParamSet" />
+		<svidget:param name="fontSize" shortname="fsize" type="number" coerce="true" defvalue="15" binding="#testtext@font-size" description="The font size for the labels." onset="handleDataParamSet" />
+		<svidget:param name="fontName" shortname="fname" type="string" defvalue="Helvetica" binding="#testtext@font-family" description="The font name for the labels." onset="handleDataParamSet" />
+		<svidget:param name="labelColor" shortname="lcolor" type="string" subtype="color" defvalue="white" description="The label color on the slices." onset="handleLabelParamsSet" />
+		<svidget:param name="labelType" shortname="lt" type="string" subtype="choice" typedata="percentage|value|text" coerce="true" defvalue="percentage" description="The label value to display. Values are 'percentage', 'value', or 'text'. Default is text." onset="handleDataParamSet" />
+		<svidget:param name="showLabels" shortname="sl" type="bool" coerce="true" defvalue="true" description="Whether to show the labels in the pie slices." onset="handleLabelParamsSet" />
+		<svidget:param name="showPopups" shortname="sp" type="bool" coerce="true" defvalue="true" description="Whether to show popups when hovering or clicking on pie slices." onset="handleShowPopupsParamSet" />
+	</svidget:params>
+
+	<svidget:actions>
+		<svidget:action name="animate" binding="animate" description="Animates the transition from 0-360 on the chart." />
+	</svidget:actions>
+
+	<svidget:events>
+		<svidget:event name="sliceSelect" description="Triggered when a slice is selected either by mousing over or touching (on non-mouse devices)." />
+		<svidget:event name="sliceActivate" description="Triggered when a slice is activated due to a click or touch after slice was selected." />
+	</svidget:events>
+
+	<style>
+		<![CDATA[
+		a.footer { fill: #afafaf; }
+		.nonhover { opacity: 0.5; -webkit-transition: opacity 0.2s ease-in; transition: opacity 0.1s ease-in; }
+		.hover { cursor: pointer; opacity: 1.0; }
+		.unhover { opacity: 1.0; }
+		.popupbox { fill: #fff; border: 1px solid #3f3f3f; }
+		]]>
+	</style>
+		
+	<defs>
+		<clipPath id="popupboxclip">
+			<rect x="0" y="0" width="120" height="50" stroke-width="2" />
+		</clipPath>
+	</defs>
+
+	<g>
+		<text id="footer" font-size="10" font-family="Helvetica" x="395" y="395" fill="#7f7f7f" text-anchor="end">
+			<a xlink:href="http://www.svidget.com" class="footer">Powered by Svidget.js</a>.
+		</text>
+	</g>
+
+	<g id="test" transform="translate(-1000 -1000)">
+		<text id="testtext" font-size="15" font-family="Helvetica" x="0" y="0" />
+	</g>
+	
+	<g id="pie">
+		<g class="" transform="matrix(1 0 0 1 0 0)" tabindex="0">
+			<path style="stroke-linejoin: round; stroke-width: 2;" fill="#cf1f1f" stroke="#ffffff" d="M 200 10 A 190 190 0 0 1 358.384 95.05 L 200 200 Z" />
+			<text style="font-family: Helvetica; font-size: 15px; text-anchor: middle;" fill="#ffffff" x="279.1013" y="56.4448">15.7%</text>
+		</g>
+		<g class="" transform="matrix(1 0 0 1 0 0)" tabindex="1">
+			<path style="stroke-linejoin: round; stroke-width: 2;" fill="#1f1fcf" stroke="#ffffff" d="M 358.384 95.0507 A 190 190 0 0 1 319.115 348.025 L 200 200 Z" />
+			<text style="font-family: Helvetica; font-size: 15px; text-anchor: middle;" fill="#ffffff" x="361.4663" y="228.8142">23.5%</text>
+		</g>
+		<g class="" transform="matrix(1 0 0 1 0 0)" tabindex="2">
+			<path style="stroke-linejoin: round; stroke-width: 2;" fill="#cf9f1f" stroke="#ffffff" d="M 319.116 348.025 A 190 190 0 0 1 234.912 386.764 L 200 200 Z" />
+			<text style="font-family: Helvetica; font-size: 15px; text-anchor: middle;" fill="#ffffff" x="271.4712" y="359.0976">7.8%</text>
+		</g>
+		<g class="" transform="matrix(1 0 0 1 0 0)" tabindex="3">
+			<path style="stroke-linejoin: round; stroke-width: 2;" fill="#1f9f1f" stroke="#ffffff" d="M 234.912 386.765 A 190 190 0 0 1 55.713 76.382 L 200 200 Z" />
+			<text style="font-family: Helvetica; font-size: 15px; text-anchor: middle;" fill="#ffffff" x="58.4915" y="285.45">39.2%</text>
+		</g>
+		<g class="" transform="matrix(1 0 0 1 0 0)" tabindex="4">
+			<path style="stroke-linejoin: round; stroke-width: 2;" fill="#9f1f9f" stroke="#ffffff" d="M 55.7131 76.3825 A 190 190 0 0 1 200 10 L 200 200 Z" />
+			<text style="font-family: Helvetica; font-size: 15px; text-anchor: middle;" fill="#ffffff" x="129.3229" y="50.1285">13.7%</text>
+		</g>
+	</g>
+	
+	<g id="popupbox" clip-path="url(#popupboxclip)" transform="translate(0 0)" display="none">
+		<rect x="0" y="0" width="120" height="50" class="popupbox" stroke="#3f3f3f" stroke-width="2" />
+		<text id="popupboxlabel" font-family="Helvetica" font-size="15" fill="#000000" font-weight="bold" stroke="none" stroke-width="0" text-anchor="start" x="5" y="20">Item 1</text>
+		<text id="popupboxvalue" font-family="Helvetica" font-size="15" fill="#000000" stroke="none" stroke-width="0" text-anchor="start" x="5" y="40">454</text>
+	</g>
+
+	<script type="application/javascript" xlink:href="../scripts/svidget.min.js"></script>
+	<script type="application/javascript" xlink:href="../scripts/snap.svg-min.js"></script>
+	<script type="application/javascript">
+		<![CDATA[
+
+		// constants
+		var DEFAULT_COLORS = ['#cf1f1f', '#1f1fcf', '#cf9f1f', '#1f9f1f', '#9f1f9f'];
+		var EDGE = 10; // space between pie and edge
+		var CENTER_SPACE = 0; // space between slice tip and center
+		var SIZE = 400;
+		var FULL_RADIUS = SIZE / 2;
+		
+		// param variables
+		var _data = [];
+		var _maxSlices = -1;
+		var _startAngle = 0;
+		var _sort = false;
+		var _colors = DEFAULT_COLORS;
+		var _fontSize = 15; //pixels
+		var _fontName = 'Helvetica';
+		var _labelColor = '#000';
+		var _labelType = 'percentage';
+		var _showLabels = true;
+		var _showPopups = true;
+
+		// general variables
+		var _slices = null;
+		var _activeSlice = null;
+		var _loaded = false;
+		var _runAnimation = true;
+		
+		
+		/* Loading */
+		
+		// entry point
+		function init() {
+			//debugger;
+			console.log('init');
+			// for demo purposes only, in case no data is passes
+			_data = [['banana', 4], ['apple', 6], ['cherry', 2], ['orange', 10], ['grape', 3.5]];
+			initParams();
+			initEvents();
+
+			drawIfStandalone();
+			_loaded = true;
+		}
+		
+		function initParams() {
+			loadParams();
+		}
+		
+		function initEvents() {
+			var surface = Snap(document.documentElement);
+			surface.click(handleSurfaceClick);
+			//var pie = Snap("#pie"); //Snap(document.documentElement); //"#pie");
+			//pie.mouseout(handlePieOut);
+			var widget = svidget.$;
+			widget.onpagepopulate(handlePagePopulate);
+		}
+		
+		function drawIfStandalone() {
+			// this is temp hack to give chance for page to pass params, if no page then we are in standalone mode
+			window.setTimeout(function () {
+				if (svidget.$.populatedFromPage()) return;
+				draw();
+			}, 100);
+		}
+		
+		window.addEventListener('load', init, false);
+		
+		
+		/* Param Events */
+		
+		function loadParams() {
+			var widget = svidget.$;
+			_data = checkNull(widget.param("data").value(), _data);
+			_maxSlices = checkNull(widget.param("maxSlices").value(), _maxSlices);
+			_startAngle = checkNull(widget.param("startAngle").value(), _startAngle);
+			_sort = checkNull(widget.param("sort").value(), _sort);
+			_colors = checkNull(widget.param("colors").value(), _colors);
+			_fontSize = checkNull(widget.param("fontSize").value(), _fontSize);
+			_fontName = checkNull(widget.param("fontName").value(), _fontName); //'Arial';
+			_labelColor = checkNull(widget.param("labelColor").value(), _labelColor); //'#000';
+			_labelType = checkNull(widget.param("labelType").value(), _labelType); //'percentage';
+			_showLabels = checkNull(widget.param("showLabels").value(), _showLabels);
+			_showPopups = checkNull(widget.param("showPopups").value(), _showPopups);
+		}
+		
+		// this handler is invoked once the params from page are passed to widget and populated onto params
+		function handlePagePopulate(e) {
+			loadParams();
+			draw();
+		}
+		
+		// this handler is invoked when these params are set: data, maxSlices, startAngle, sort, fontSize, fontName, labelType
+		function handleDataParamSet(e) {
+			if (!_loaded) return;
+			//console.log('handleDataParamSet');
+			var widget = svidget.$;
+			if (widget.connected() && !widget.populatedFromPage()) return; // not all params have been populated, so defer until loadParams() is called
+			//console.log('populated from page: ' + widget.populatedFromPage());
+
+			_runAnimation = _runAnimation || e.target.name() == "data";
+			loadParams();
+			draw();
+		}
+		
+		// this handler is invoked when the colors params is set
+		function handleColorsParamSet(e) {
+			if (!_loaded) return;
+			//console.log('handleColorsParamSet');
+			var widget = svidget.$;
+			if (widget.connected() && !widget.populatedFromPage()) return; // not all params have been populated, so defer until loadParams() is called
+			_colors = widget.param("colors").value();
+			var i = 0;
+			//debugger;
+			iterateSliceContainers(function (snapEle) {
+				var sliceEle = snapEle.select("path");
+				var color = _colors[i];
+				sliceEle.attr({ fill: color });
+				i = (i + 1) % _colors.length;
+			});
+		}
+		
+		// this handler is invoked when the labelColor or showLabels params is set
+		function handleLabelParamsSet(e) {
+			if (!_loaded) return;
+			//console.log('handleLabelParamsSet');
+			var widget = svidget.$;
+			if (widget.connected() && !widget.populatedFromPage()) return; // not all params have been populated, so defer until loadParams() is called
+			_labelColor = widget.param("labelColor").value() || _labelColor;
+			_showLabels = widget.param("showLabels").value();
+
+			iterateSliceContainers(function (snapEle) {
+				var labelEle = snapEle.select("text");
+				labelEle.attr({
+					fill: _labelColor,
+					'font-family': _fontName,
+					'font-size': _fontSize,
+					'display': _showLabels ? "" : "none"
+				});
+			});
+		}
+		
+		// this handler is invoked when the showPopups params is set
+		function handleShowPopupsParamSet(e) {
+			if (!_loaded) return;
+			//console.log('handleShowPopupsParamSet');
+			var widget = svidget.$;
+			if (widget.connected() && !widget.populatedFromPage()) return; // not all params have been populated, so defer until loadParams() is called
+			_showPopups = widget.param("showPopups").value();
+			if (!_showPopups) hidePopup(); // just in case
+		}
+		
+		
+		/* Action Events */
+		
+		function animate(e) {
+			_runAnimation = true;
+			redraw();
+		}
+		
+		
+		/* UI Events */
+		
+		function handleSliceOver(e) {
+			iterateSliceContainers(function (snapEle) {
+				snapEle.removeClass("hover");
+				snapEle.addClass("nonhover");
+			});
+			var target = Snap(e.currentTarget);
+			target.removeClass("nonhover");
+			target.addClass("hover");
+			var index = target.data("index");
+			//debugger;
+			var currentSlice = _slices[index];
+			if (_showPopups) showPopup(currentSlice);
+			if (_activeSlice != currentSlice) e.preventDefault(); // in case of touchstart, prevents "click" from firing (needs test)
+			_activeSlice = currentSlice;
+			var val = toEventValue(currentSlice);
+			svidget.$.event("sliceSelect").trigger(val);
+			//console.log('handleSliceOver index=' + index);
+		}
+		
+		function handleSliceOut(e) {
+			iterateSliceContainers(function (snapEle) {
+				snapEle.removeClass("hover");
+				snapEle.removeClass("nonhover");
+			});
+
+			hidePopup();
+			_activeSlice = null;
+			//console.log('handleSliceOut');
+			//console.log('handleSliceOut ' + e.target.nodeName + " " + e.target.id);
+		}
+		
+		function handleSliceClick(e) {
+			//alert('clicked');
+			var target = Snap(e.currentTarget);
+			var index = target.data("index");
+			var currentSlice = _slices[index];
+			var val = toEventValue(currentSlice);
+			svidget.$.event("sliceActivate").trigger(val);
+			e.stopPropagation();
+		}
+		
+		function handleSurfaceClick(e) {
+			handleSliceOut(e);
+		}
+		
+		function toEventValue(slice) {
+			return { name: slice.label, value: slice.value, ratio: slice.ratio };
+		}
+		
+		
+		/* Popup */
+		
+		function showPopup(slice) {
+			document.getElementById("popupboxlabel").textContent = slice.label;
+			document.getElementById("popupboxvalue").textContent = slice.toPctString() + " (" + slice.value + ")";
+			var box = Snap("#popupbox");
+			var rect = box.select("rect");
+			//box.attr({ display: ""});
+			positionBox(slice.centerAngle());
+			setPopupVisible(true);
+			
+			function positionBox(angle) {
+				var w = rect.node.width.baseVal.value;
+				var h = rect.node.height.baseVal.value;
+				var x = 0;
+				var y = 0;
+				angle = angle % 360;
+				if (angle <= 90)
+					x = SIZE - w;
+				else if (angle <= 180) {
+					x = SIZE - w;
+					y = SIZE - h;
+				}
+				else if (angle <= 270)
+					y = SIZE - h;
+				box.transform(translate(x, y));
+			}
+			
+			function translate(x, y) {
+				return "translate(" + x + " " + y + ")";
+			}
+		}
+		
+		function hidePopup() {
+			setPopupVisible(false);
+		}
+		
+		function setPopupVisible(visible) {
+			var d = visible ? "" : "none";
+			document.getElementById("popupbox").setAttribute("display", d);
+		}
+		
+		
+		/* Drawing */
+
+		function draw() {
+			//debugger;
+			clearPie();
+			loadSlices();
+			drawSlices();
+			_runAnimation = false;
+		}
+		
+		function redraw() {
+			clearPie();
+			drawSlices();
+			_runAnimation = false;
+		}
+		
+		function clearPie() {
+			var pie = Snap("#pie");
+			pie.clear();
+		}
+		
+		function loadSlices() {
+			_slices = buildSlices(_data);
+		}
+		
+		function drawSlices() {
+			if (!_slices || !_slices.length) return; // no data yet
+			for (var i=0; i<_slices.length; i++) {
+				var slice = _slices[i];
+				drawSlice(slice);
+			}
+		}
+		
+		function drawSlice(slice) { //startAngle, endAngle, color) {
+			var pie = Snap("#pie");
+			var sliceContainer = pie.group();
+			// wire events
+			sliceContainer.data("index", slice.index);
+			sliceContainer.mouseover(handleSliceOver);
+			sliceContainer.touchstart(handleSliceOver); // for touch devices
+			sliceContainer.mouseout(handleSliceOut);
+			sliceContainer.click(handleSliceClick);
+			
+			sliceContainer.attr({ 'tabindex': slice.index });
+			// set up animation
+			//var r = "r-" + slice.angle + ",200,200";
+			//sliceContainer.transform("r-180,200,200");
+			if (_runAnimation) {
+				animateSlices(sliceContainer, slice);
+			}
+			// build sub-elements for slice
+			var sliceEle = buildSliceElement(sliceContainer, slice.path, slice.color); //g, startAngle, endAngle, color);
+			var labelEle = buildLabelElement(sliceContainer, slice.getLabelString(), slice.textcolor, slice.textX, slice.textY);
+		}
+		
+		function buildSliceElement(container, path, color) { //, source, startAngle, endAngle, color) {
+			//var d = generateSlicePath(startAngle, endAngle);
+			var sliceEle = container.path(path);
+			sliceEle.attr({
+				fill: color,
+				stroke: "#fff",
+				strokeWidth: 2,
+				'stroke-linejoin': 'round'
+			});
+			return sliceEle;
+		}
+		
+		function buildLabelElement(container, text, color, x, y) {
+			if (x < 0 || y < 0) return; // there is no room for label, so exit
+			var yOffset = _fontSize / 4.0; // this is for positioning text along baseline
+			var labelEle = container.text(x, y, text);
+			labelEle.attr({
+				fill: color,
+				x: x,
+				y: y + yOffset,
+				'font-family': _fontName,
+				'font-size': _fontSize,
+				'text-anchor': 'middle',
+				'display': _showLabels ? "" : "none"
+			});
+			return labelEle;
+		}
+		
+		function iterateSliceContainers(action) {
+			var pie = Snap("#pie");
+			var groups = pie.selectAll("g");
+			for (var i=0; i<groups.length; i++) action(groups[i]);
+		}
+		
+		function animateSlices(sliceContainer, slice) {
+			sliceContainer.transform("rotate(-" + parseInt(slice.angle) + " 200 200)");
+			sliceContainer.animate({ transform: "rotate(0 200 200)" }, 500, mina.easein);
+		}
+		
+		
+		/* Slice Building */
+		
+		function buildSlices(data) {
+			if (!data || !data.length) return;
+			// ex: [['Steelers', 0.14], ['Broncos', 0.38]]
+			data = data.slice(); // clone array
+			var slices = [];
+			var sum = 0.0;
+			var remSlice = { name: "Other", value: 0 };
+			// sort by value so that smaller slices are grouped together
+			if (_sort) sortData(data);
+			
+			// builds a collection of slice items to be use to build the actual slice objects below
+			// also sums the total of all values for each item
+			for (var i=0; i<data.length; i++) {
+				var item = data[i];
+				
+				if (item.length && item.length >= 2) {
+					if (_maxSlices > 0 && i >= _maxSlices-1 && data.length > _maxSlices) {
+						remSlice.value += item[1];
+					}
+					else {
+						var slice = { name: item[0], value: item[1] };
+						slices.push(slice);
+					}
+					sum += +item[1];
+				}
+			}
+			// append remaining slice if maxSlices exceeded
+			if (remSlice.value > 0) slices.push(remSlice);
+			
+			// calc ratios
+			for (var i=0; i<slices.length; i++) {
+				slices[i].ratio = slices[i].value / sum;
+			}
+			
+			// build slice objects
+			var result = [];
+			var startAngle = _startAngle;
+			for (var i=0; i<slices.length; i++) {
+				var colorIndex = i % _colors.length;
+				var item = new Slice(startAngle, slices[i].ratio, _colors[colorIndex], slices[i].value, slices[i].name, _labelColor, i);
+				var angleLength = item.ratio * 360;
+				result.push(item);
+				startAngle += angleLength;
+			}
+			
+			return result;
+		}
+
+		function sortData(data) {
+			data.sort(function (a,b) {
+				return b[1] - a[1]; //sort descending by value (index 1 in subarray)
+			});
+		}
+		
+		
+		/* Misc */
+		
+		function checkNull(item, backupItem) {
+			return item != null ? item : backupItem;
+		}
+
+
+		/* Models */
+
+		// Slice object
+		function Slice(angle, ratio, color, value, label, labelColor, index) {
+			this.angle = angle;
+			this.ratio = ratio;
+			this.angleLength = ratio * 360;
+			this.color = color;
+			this.textcolor = labelColor;
+			this.value = value;
+			this.label = label;
+			this.index = index;
+			this.path = generateSlicePath(angle, angle + this.angleLength);
+			this.textX = -1;
+			this.textY = -1;
+			
+			//console.log('new Slice populateTextXY');
+			populateTextXY.call(this);
+			//console.log('new Slice populateTextXY complete');
+			
+			function populateTextXY() {
+				//debugger;
+				var textRect = getTextRectXY(this.angle, this.angleLength, this.path, this.getLabelString());
+				if (textRect == null) return;
+				var textX = textRect.x + (textRect.width / 2);
+				var textY = textRect.y + (textRect.height / 2);
+				this.textX = textX;
+				this.textY = textY;
+			}
+			
+			// returns { x: 0, y: 0, width: 0, height: 0 }
+			function getTextRectXY(angle, angleLen, path, label) {
+				// measure text length and height, this is the text bounding rect
+				var PAD = 6;
+				//var YOFFSET = 4;
+				var textEle = document.getElementById("testtext");
+				textEle.textContent = label;
+				var rectWidth = textEle.getComputedTextLength() + PAD; 
+				var rectHeight = _fontSize + PAD;
+				//var rectSize = { width: width, height: _fontSize };
+				var arcRadius = FULL_RADIUS - EDGE;
+				// given imaginary line between center of pie and middle angle of edge
+				//   determine the furthest away point from center of pie such that the text rect is fully inside the slice
+				var C = FULL_RADIUS; // 200
+				var centerAngle = (angle + angle + angleLen) / 2;
+				var centerAnglePoint = { x: getAngleX(centerAngle, arcRadius), y: getAngleY(centerAngle, arcRadius) };
+				var rect = { x: centerAnglePoint.x - (rectWidth / 2), y: centerAnglePoint.y - (rectHeight / 2), width: rectWidth, height: rectHeight };
+
+				var startX = rect.x;
+				var startY = rect.y;
+				var ccx = startX < 200 ? -1 : 1;
+				var ccy = startY < 200 ? -1 : 1;
+				var endX = C - (rectWidth / 2); //+ (centerAnglePoint.x - startX * ccx);
+				var endY = C - (rectHeight / 2); //+ (centerAnglePoint.y - startY * ccy);
+
+				// in this loop we work our way from edge of circle to center, in incremenetal units divisible by 100
+				// if we get halfway there (50) and still the rect doesn't fit, then it will never fit
+				for (var i=1; i<50; i++) {
+					var curX = startX + (((endX - startX) / 100) * i);
+					var curY = startY + (((endY - startY) / 100) * i);
+					var curRect = { x: curX, y: curY, width: rect.width, height: rect.height };
+					if (isRectInPath(curRect, path)) return curRect;
+				}
+				
+				return null;
+			}
+			
+			function isRectInPath(rect, path) {
+				return Snap.path.isPointInside(path, rect.x, rect.y) && 
+								Snap.path.isPointInside(path, rect.x + rect.width, rect.y) &&
+								Snap.path.isPointInside(path, rect.x + rect.width, rect.y + rect.height) &&
+								Snap.path.isPointInside(path, rect.x, rect.y + rect.height);
+			}
+			
+			function generateSlicePath(startAngle, endAngle) {
+				//M 340 251 L 300.142 399.753 A 154 154 0 0 1 231.106 359.894 L 340 251 A 0 0 0 0 0 340 251
+				var path = "";
+				var outerLength = FULL_RADIUS - EDGE;
+				var startX = getAngleX(startAngle, outerLength);
+				var startY = getAngleY(startAngle, outerLength);
+				path += moveTo(startX, startY);
+			
+				path += generateSlicePathArc(startAngle, endAngle);
+				var endX = getAngleX(endAngle, CENTER_SPACE);
+				var endY = getAngleY(endAngle, CENTER_SPACE);
+				path += lineTo(endX, endY);
+				path += " Z";
+			
+				return path;
+			}
+		
+			// startAngle: start angle (in degrees)
+			// endAngle: end angle (in degrees)
+			function generateSlicePathArc(startAngle, endAngle) {
+				var arcRadius = FULL_RADIUS - EDGE;
+				if (endAngle < startAngle) endAngle += 360;
+				var angleDiff = endAngle - startAngle;
+				var largeArc = angleDiff > 180 ? 1 : 0; // if greater than 180 deg we need to use large arc in path
+				var endX = getAngleX(endAngle, arcRadius);
+				var endY = getAngleY(endAngle, arcRadius);
+				if (endX == 100 && pct > 0) endX = 99.999; // this corrects issue with path if start and end are same it won't draw an arc
+				//debugger;
+			
+				// A 73,73 0 1,1 27,100
+				var path = arcTo(arcRadius, largeArc, 1, endX, endY);
+			
+				return path;
+			}
+		
+			function getAngleX(angle, fromCenter) {
+				var rad = Snap.rad(angle);
+				return (Math.sin(rad) * fromCenter) + FULL_RADIUS;
+			}
+		
+			function getAngleY(angle, fromCenter) {
+				var rad = Snap.rad(angle);
+				return (-Math.cos(rad) * fromCenter) + FULL_RADIUS;
+			}
+		
+			function lineTo(x, y) {
+				return "L " + x + "," + y + " ";
+			}
+		
+			function moveTo(x, y) {
+				return "M " + x + "," + y + " ";
+			}
+		
+			function arcTo(radius, largeArcFlag, sweepFlag, endX, endY) {
+				return "A " + radius + "," + radius + " 0 " + largeArcFlag + "," + sweepFlag + " " + round3(endX) + "," + round3(endY) + " ";
+			}
+		
+			function round3(val) {
+				return parseInt(val * 1000) / 1000.0;
+			}
+			
+			function slope(x1, x2, y1, y2) {
+				if (x1 == x2) return NaN;
+				return (y2 - y1) / (x2 - x1);
+			}
+		}
+		
+		Slice.prototype = {
+		
+			toPctString: function () {
+				return (Math.round(this.ratio * 1000) / 10.0) + "%";
+			},
+			
+			getLabelString: function(type) {
+				// percentage|value|text
+				type = type || _labelType;
+				if (type == "value")
+					return this.value + '';
+				else if (type == "text")
+					return this.label;
+				else
+					return this.toPctString();
+			},
+			
+			centerAngle: function () {
+				return (this.angle + this.angle + this.angleLength) / 2;
+			}
+		
+		}
+		
+	
+	  ]]>
+	</script>
+</svg>

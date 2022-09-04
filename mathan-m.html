@@ -1,0 +1,262 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>Resume</title>
+<meta name="generator" content="WYSIWYG Web Builder 17 - http://www.wysiwygwebbuilder.com">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link href="cupertino/jquery-ui.min.css" rel="stylesheet">
+<link href="font-awesome.min.css" rel="stylesheet">
+<link href="mathan-m.css" rel="stylesheet">
+<script src="jquery-1.12.4.min.js"></script>
+<script src="wb.panel.min.js"></script>
+<script src="util.min.js"></script>
+<script src="scrollspy.min.js"></script>
+<script src="jquery-ui.min.js"></script>
+<script src="wwb17.min.js"></script>
+<script>
+$(document).ready(function()
+{
+   $("a[href*='#about']").click(function(event)
+   {
+      event.preventDefault();
+      $('html, body').stop().animate({ scrollTop: $('#about').offset().top }, 600, 'easeOutSine');
+   });
+   $("a[href*='#expertise']").click(function(event)
+   {
+      event.preventDefault();
+      $('html, body').stop().animate({ scrollTop: $('#expertise').offset().top }, 600, 'easeOutSine');
+   });
+   $("#PanelLayer").panel({animate: true, animationDuration: 200, animationEasing: 'easeOutCubic', dismissible: false, display: 'push', position: 'left'});
+   $("a[href*='#skills']").click(function(event)
+   {
+      event.preventDefault();
+      $('html, body').stop().animate({ scrollTop: $('#skills').offset().top }, 600, 'easeOutSine');
+   });
+   $("a[href*='#awards']").click(function(event)
+   {
+      event.preventDefault();
+      $('html, body').stop().animate({ scrollTop: $('#awards').offset().top }, 600, 'easeOutSine');
+   });
+   $("a[href*='#contact']").click(function(event)
+   {
+      event.preventDefault();
+      $('html, body').stop().animate({ scrollTop: $('#contact').offset().top }, 600, 'easeOutSine');
+   });
+   $("#progressbar_uidesign").progressbar(
+   {
+      value: 80,
+      change: function() 
+      {
+         $("#progressbar_uidesign-label").text($(this).progressbar('value') + '%');
+      }
+   });
+   $("#progressbar_jquery").progressbar(
+   {
+      value: 60,
+      change: function() 
+      {
+         $("#progressbar_jquery-label").text($(this).progressbar('value') + '%');
+      }
+   });
+   $("#progressbar_php").progressbar(
+   {
+      value: 75,
+      change: function() 
+      {
+         $("#progressbar_php-label").text($(this).progressbar('value') + '%');
+      }
+   });
+   $("#progressbar_html").progressbar(
+   {
+      value: 90,
+      change: function() 
+      {
+         $("#progressbar_html-label").text($(this).progressbar('value') + '%');
+      }
+   });
+});
+</script>
+<script>
+$(document).ready(function()
+{
+   var $progressbars = $('.ui-progressbar');
+   
+   $progressbars.each(function() 
+   {
+     var $obj = $(this);
+     $obj.data('value', $obj.progressbar('option', 'value'));
+     $obj.data('done', false);
+     $obj.progressbar('option', 'value', 0);
+   });
+   $(window).bind('scroll', function() 
+   {
+      $progressbars.each(function() 
+      {
+         var $obj = $(this);
+         if (!$obj.data('done') && $(window).scrollTop() + $(window).height() >= $obj.offset().top) 
+         {
+            $obj.data('done', true);
+            $obj.animate({scroll: 1}, 
+            { 
+               duration: 3000, 
+               step: function(now) 
+               {
+                  var $obj = $(this);
+                  var val = Math.round($obj.data('value') * now);
+                  $obj.progressbar('option', 'value', val);
+               }
+            });
+         }
+      });
+   }).triggerHandler('scroll');
+});
+</script>
+</head>
+<body data-spy="scroll">
+<div id="PanelLayer" style="text-align:center;">
+<div id="PanelLayer_Container" style="width:250px;position:relative;margin-left:auto;margin-right:auto;text-align:left;">
+<div id="wb_CssMenu1" style="position:absolute;left:0px;top:226px;width:250px;height:200px;z-index:13;">
+<ul id="CssMenu1" role="menubar" class="nav">
+<li role="menuitem" class="nav-item firstmain"><a class="nav-link" href="#about" target="_self">About</a>
+</li>
+<li role="menuitem" class="nav-item"><a class="nav-link" href="#expertise" target="_self">Expertise</a>
+</li>
+<li role="menuitem" class="nav-item"><a class="nav-link" href="#skills" target="_self">Skills</a>
+</li>
+<li role="menuitem" class="nav-item"><a class="nav-link" href="#awards" target="_self">Awards</a>
+</li>
+<li role="menuitem" class="nav-item"><a class="nav-link" href="#contact" target="_self">Contact&nbsp;Me</a>
+</li>
+</ul>
+</div>
+<div id="wb_Copyrights" style="position:absolute;left:30px;top:485px;width:192px;height:14px;text-align:center;z-index:14;">
+<span style="color:#FFFFFF;font-family:Arial;font-size:11px;">Copyright 2018 - All Right Reserved</span></div>
+<div id="wb_Image1" style="position:absolute;left:49px;top:38px;width:139px;height:139px;z-index:15;">
+<img src="images/269894663_497476991735820_1483592067597454439_n.jpg" id="Image1" alt="" width="139" height="247"></div>
+<div id="wb_close-panel" style="position:absolute;left:213px;top:7px;width:32px;height:32px;text-align:center;z-index:16;">
+<a href="#" onclick="HidePanel('PanelLayer', event);return false;"><div id="close-panel"><i class="fa fa-times"></i></div></a></div>
+</div>
+</div>
+
+<script>
+var wb_Timer1;
+function TimerStartTimer1()
+{
+   wb_Timer1 = setTimeout(function()
+   {
+      var event = null;
+      ShowPanel('PanelLayer', event);
+   }, 200);
+}
+function TimerStopTimer1()
+{
+   clearTimeout(wb_Timer1);
+}
+TimerStartTimer1();
+</script>
+
+<div id="FlexContainer1">
+<div id="wb_Heading1" style="display:inline-block;width:236px;z-index:0;">
+<h1 id="Heading1">profile page</h1>
+</div>
+<div id="wb_FontAwesomeIcon5" style="display:inline-block;width:48px;height:42px;text-align:center;z-index:1;">
+<a href="#" onclick="ShowPanel('PanelLayer', event);HidePanel('PanelLayer', event);return false;"><div id="FontAwesomeIcon5"><i class="fa fa-bars"></i></div></a>
+</div>
+<a id="Button2" href="./index.html" style="display:block;width:254px;height:76px;z-index:2;">Dashboard</a>
+</div>
+<div id="about">
+<div id="wb_Text2">
+<span style="color:#696969;font-family:Arial;font-size:53px;"><strong>My Name Is </strong></span><span style="color:#3E78B3;font-family:Arial;font-size:53px;"><strong>Mathan Raj M</strong></span><span style="color:#696969;font-family:Arial;font-size:53px;"><strong> </strong></span><span style="color:#696969;font-family:Arial;font-size:32px;"><strong><br></strong></span><span style="color:#696969;font-family:Arial;font-size:16px;"><strong><br>NO 111 Address - Chennai TamilNadu 12345 - 9790754854- Mathanraj@gmail.com <br><br>I'm a Flutter dedicated to helping through online services businesses grow their customer base and decrease customer churn. I have 2 years of experience in local sales and I've consistently met and exceeded my quota throughout my career. Within the last year, I've topped our leaderboard six out of 10 months. On average, I close business 10% faster than my peers</strong></span>
+</div>
+<div id="wb_IconFont1" style="display:inline-block;width:26px;height:26px;text-align:center;z-index:4;">
+<div id="IconFont1"><i class="fa fa-linkedin"></i></div>
+</div>
+<div id="wb_IconFont2" style="display:inline-block;width:26px;height:26px;text-align:center;z-index:5;">
+<div id="IconFont2"><i class="fa fa-code"></i></div>
+</div>
+<div id="wb_IconFont3" style="display:inline-block;width:26px;height:26px;text-align:center;z-index:6;">
+<div id="IconFont3"><i class="fa fa-laptop"></i></div>
+</div>
+<div id="wb_IconFont4" style="display:inline-block;width:26px;height:26px;text-align:center;z-index:7;">
+<div id="IconFont4"><i class="fa fa-bug"></i></div>
+</div>
+</div>
+<div id="expertise">
+<div id="wb_Text1">
+<span style="color:#696969;font-family:Arial;font-size:24px;"><strong>Expertise</strong></span><span style="color:#696969;font-family:Arial;font-size:19px;"><strong><br></strong></span><span style="color:#000000;font-family:Arial;font-size:15px;"><strong><br></strong></span><span style="color:#3E78B3;font-family:Arial;font-size:15px;"><strong>HTML/CSS</strong></span><span style="color:#000000;font-family:Arial;font-size:15px;"><br></span><span style="color:#696969;font-family:Arial;font-size:15px;">Suspendisse potenti. Nunc feugiat mi a tellus consequat imperdiet. Vestibulum sapien. Proin quam. Etiam ultrices. Suspendisse in justo eu magna luctus suscipit. Sed lectus.<br></span><span style="color:#000000;font-family:Arial;font-size:15px;">&nbsp; <br></span><span style="color:#3E78B3;font-family:Arial;font-size:15px;"><strong>Front-end Design</strong></span><span style="color:#000000;font-family:Arial;font-size:15px;"><br></span><span style="color:#696969;font-family:Arial;font-size:15px;">Integer euismod lacus luctus magna. Quisque cursus, metus vitae pharetra auctor, sem massa mattis sem, at interdum magna augue eget diam. <br></span><span style="color:#000000;font-family:Arial;font-size:15px;"><br></span><span style="color:#3E78B3;font-family:Arial;font-size:15px;"><strong>PHP</strong></span><span style="color:#000000;font-family:Arial;font-size:15px;"><br></span><span style="color:#696969;font-family:Arial;font-size:15px;">Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; Morbi lacinia molestie dui. Praesent blandit dolor. <br></span><span style="color:#000000;font-family:Arial;font-size:15px;">&nbsp; <br></span><span style="color:#3E78B3;font-family:Arial;font-size:15px;"><strong>JavaScript / jQuery</strong></span><span style="color:#000000;font-family:Arial;font-size:15px;"><br></span><span style="color:#696969;font-family:Arial;font-size:15px;">Donec lacus nunc, viverra nec, blandit vel, egestas et, augue. Vestibulum tincidunt malesuada tellus. Ut ultrices ultrices enim. Curabitur sit amet mauris. </span>
+</div>
+<div id="wb_FontAwesomeIcon6" style="display:inline-block;width:54px;height:54px;text-align:center;z-index:9;">
+<div id="FontAwesomeIcon6"><i class="fa fa-html5"></i></div>
+</div>
+<div id="wb_FontAwesomeIcon7" style="display:inline-block;width:54px;height:54px;text-align:center;z-index:10;">
+<div id="FontAwesomeIcon7"><i class="fa fa-css3"></i></div>
+</div>
+<div id="wb_FontAwesomeIcon9" style="display:inline-block;width:54px;height:54px;text-align:center;z-index:11;">
+<div id="FontAwesomeIcon9"><i class="fa fa-wordpress"></i></div>
+</div>
+<div id="wb_FontAwesomeIcon8" style="display:inline-block;width:54px;height:54px;text-align:center;z-index:12;">
+<div id="FontAwesomeIcon8"><i class="fa fa-joomla"></i></div>
+</div>
+</div>
+<div id="skills">
+<div id="wb_Heading3" style="display:inline-block;z-index:17;">
+<h1 id="Heading3">Skills</h1>
+</div>
+<label for="" id="Label5" style="display:block;height:28px;height:28px;line-height:20px;z-index:18;">HTML/CSS:</label>
+<div id="progressbar_html"  style="display:inline-block;height:20px;position:relative;">
+<div id="progressbar_html-label">90%</div>
+</div>
+<label for="" id="Label6" style="display:block;height:28px;height:28px;line-height:20px;z-index:20;">UI Design:</label>
+<div id="progressbar_uidesign"  style="display:inline-block;height:20px;position:relative;">
+<div id="progressbar_uidesign-label">80%</div>
+</div>
+<label for="" id="Label7" style="display:block;height:28px;height:28px;line-height:20px;z-index:22;">jQuery:</label>
+<div id="progressbar_jquery"  style="display:inline-block;height:20px;position:relative;">
+<div id="progressbar_jquery-label">60%</div>
+</div>
+<label for="" id="Label8" style="display:block;height:28px;height:28px;line-height:20px;z-index:24;">PHP:</label>
+<div id="progressbar_php"  style="display:inline-block;height:20px;position:relative;">
+<div id="progressbar_php-label">75%</div>
+</div>
+
+</div>
+<div id="wb_awards">
+<div id="awards">
+<div id="wb_Heading2" style="display:inline-block;z-index:27;">
+<h1 id="Heading2">Awards</h1>
+</div>
+<div id="wb_Card1" style="display:flex;z-index:28;" class="card">
+   <div id="Card1-card-body">
+      <img id="Card1-card-item0" src="images/OIP.jpg" width="474" height="266" alt="" title="">
+      <div id="Card1-card-item1">Google developer 2022</div>
+      <div id="Card1-card-item2">Lorem ipsum dolor sit amet, justo eget porttitor mauris sit amet felis. Neque id cursus faucibus. </div>
+   </div>
+</div>
+<div id="wb_Card2" style="display:flex;z-index:29;" class="card">
+   <div id="Card2-card-body">
+      <img id="Card2-card-item0" src="images/sat-sid-dc-1-img.png" width="180" height="180" alt="" title="">
+      <div id="Card2-card-item1">Website of the Year Award 2018</div>
+      <div id="Card2-card-item2">Lorem ipsum dolor sit amet, justo eget porttitor mauris sit amet felis. Neque id cursus faucibus. </div>
+   </div>
+</div>
+<div id="wb_Card3" style="display:flex;z-index:30;" class="card">
+   <div id="Card3-card-body">
+      <img id="Card3-card-item0" src="images/kitty1.jpg" width="262" height="350" alt="" title="">
+      <div id="Card3-card-item1">1st Place at Mr. Website Competition</div>
+      <div id="Card3-card-item2">Lorem ipsum dolor sit amet, justo eget porttitor mauris sit amet felis. Neque id cursus faucibus. </div>
+   </div>
+</div>
+</div>
+</div>
+<div id="contact">
+<div id="wb_Heading4" style="display:inline-block;z-index:31;">
+<h1 id="Heading4">Contact Me</h1>
+</div>
+<input type="text" id="Editbox2" style="display:block;height:42px;" name="name" value="" spellcheck="false" placeholder="Name">
+<input type="text" id="Editbox3" style="display:block;height:42px;" name="email" value="" spellcheck="false" placeholder="E-mail">
+<input type="text" id="Editbox1" style="display:block;height:42px;" name="message" value="" spellcheck="false" placeholder="Message">
+<input type="submit" id="Button1" name="" value="Send message" style="display:block;width:169px;height:35px;z-index:35;">
+</div>
+</body>
+</html>
