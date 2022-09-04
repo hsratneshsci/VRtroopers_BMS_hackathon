@@ -1,2 +1,7 @@
 # VRtroopers_BMS_hackathon
-team name : VR TROOPERS
+  Team Name : VR TROOPERS
+  Team Members : Ratnesh HS,Mathan Raj M
+  
+  
+  
+
